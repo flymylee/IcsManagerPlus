@@ -1,30 +1,43 @@
-Internet Connection Sharing Manager
-===================================
+ICS Manager+
+============
 
-It is a simple command line tool for turning ICS on or off on Windows 7 and higher.
+It is a simple command line tool for turning ICS (Internet Connection Sharing) on or off on Windows 10 and higher.
 
-I wrote it because the `netsh routing` command which could be used for this in Windows XP is not available in Windows 7.
+Acknowledgement
+---------------
 
+* This project is forked from [**utapyngo**](https://github.com/utapyngo/)'s [**IcsManager**](https://github.com/utapyngo/icsmanager).
+
+* This project is licensed under [**GPL-3.0**](./gpl-3.0.txt), likewise [its original project](https://github.com/utapyngo/icsmanager).
+
+* You need to download and install `System.Management.Automation` on `Visual Studio`.
+
+Goals
+-----
+
+This project has two goals:
+
+* Easify of building this program. It is NOTHING that I honestly know about `.NET` nor `C#`.
+* Fixing a bug that mess up dhcp settings of home connection.
 
 Requirements
 ------------
 
-* Windows 7 or higher.
-* .NET Framework 4.0.
+* `Windows 10` or higher.
+* `Visual Studio Community 2019`.
+* `.NET Framework 4.8`.
+* `System.Management.Automation` [(NuGet Package)](https://www.nuget.org/packages/System.Management.Automation).
 
-It seems that `System.Management.Automation` is no longer supported by .NET.
-There is an unofficial package https://www.nuget.org/packages/System.Management.Automation.
+  * You can install it in `Visual Studio` by open **Tools** > **NuGet Package Manager** > **Package Manager Console** and type. (Shortcut to Open consle: **ctrl+`** )
 
-You can install it in Visual Studio by open **Tools** > **NuGet Package Manager** > **Package Manager Console** and type
-
-
-    PM> Install-Package System.Management.Automation -Version 6.1.7601.17515
+    ```PowerShell
+    PM> Install-Package System.Management.Automation -Version 7.2.1
+    ```
 
 Building
 --------
 
 Run `build.cmd`.
-
 
 Usage
 -----
@@ -32,49 +45,64 @@ Usage
 All commands require administrative privileges.
 
 ---
-	
-    icsmanager info
+
+```Command
+icsm info
+```
 
 Display information about currently available connections:
 
-* name
-* guid
-* status
-* address
-* gateway
-* sharing status
+* `Name`
+* `GUID`
+* `Status`
+* `InterfaceType`
+* `Gateway`
+* `Unicast address`
+* `Device`
+* `SharingType`
 
 ---
 
-    icsmanager enable {GUID-OF-CONNECTION-TO-SHARE} {GUID-OF-HOME-CONNECTION} [force]
-    icsmanager enable "Name of connection to share" "Name of home connection" [force]
+```Command
+icsm enable {GUID-OF-CONNECTION-TO-SHARE} {GUID-OF-HOME-CONNECTION} [force]
+icsm enable "Name of connection to share" "Name of home connection" [force]
+```
 
 Enable connection sharing. Use the `force` argument if you want to automatically disable existing connection sharing.
 
 ---
 
-    icsmanager disable
+```Command
+icsm disable
+```
 
 Disable connection sharing.
 
 ---
 
-Powershell
+PowerShell
 ----------
 
-0. Import module:
+1. Import module:
 
-    Import-Module IcsManager.dll
+    ```PowerShell
+    Import-Module icsmLibrary.dll
+    ```
 
-0. List network connections:
+1. List network connections:
 
+    ```PowerShell
     Get-NetworkConnections
+    ```
 
-0. Start Internet Connection Sharing:
+1. Start Internet Connection Sharing:
 
+    ```PowerShell
     Enable-ICS "Connection to share" "Home connection"
+    ```
 
-0. Stop Internet Connection Sharing:
+1. Stop Internet Connection Sharing:
 
+    ```PowerShell
     Disable-ICS
-
+    ```
